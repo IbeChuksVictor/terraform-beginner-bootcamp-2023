@@ -56,7 +56,7 @@ Fixing the gpg deprecation issue proved that the steps involved were a considera
 Make sure to add the Shebang(`#!`) character sequence to the first line of the bash script. It points the bash script program to the location of the program's interpreter.<br>
 Use:
 ```sh
-#!/bin/env bash
+#!/usr/bin/env bash
 ```
 Instead of:
 ```sh
@@ -100,3 +100,84 @@ $ chmod 744 ./bin/install_terraform_cli.sh
 
 Becareful when using `init` in the `.gitpod.yml` file because it will not rerun when the gitpod workspace is relaunched.<br>
 Check [here](https://www.gitpod.io/docs/configure/workspaces/tasks) for insights.
+
+### Working with Env Vars
+
+#### env command
+
+List Out all Environment Variables (Env Vars) using the `env` command like thus:
+
+```zsh
+$ env
+
+PYENV_HOOK_PATH=/home/gitpod/.gp_pyenv.d
+PIPENV_VENV_IN_PROJECT=true
+GP_PREVIEW_BROWSER=/ide/bin/remote-cli/gitpod-code --preview
+PYENV_SHELL=bash
+rvm_prefix=/home/gitpod
+SUPERVISOR_ADDR=localhost:22999
+HOSTNAME=ibechuksvic-terraformbe-3gn1ocppzgh
+GITPOD_REPO_ROOT=/workspace/terraform-beginner-bootcamp-2023
+JAVA_HOME=/home/gitpod/.sdkman/candidates/java/current
+...
+```
+
+Filter specific env vars using the `grep` command passed through the pipe symbol (`|`).<br>
+E.g:
+```zsh
+$ env | grep terraform
+
+HOSTNAME=ibechuksvic-terraformbe-3gn1ocppzgh
+GITPOD_REPO_ROOT=/workspace/terraform-beginner-bootcamp-2023
+PWD=/workspace/terraform-beginner-bootcamp-2023
+THEIA_WORKSPACE_ROOT=/workspace/terraform-beginner-bootcamp-2023
+GITPOD_WORKSPACE_ID=ibechuksvic-terraformbe-3gn1ocppzgh
+GITPOD_WORKSPACE_CONTEXT_URL=https://github.com/IbeChuksVictor/terraform-beginner-bootcamp-2023/tree/5-project-root-env-var
+GITPOD_REPO_ROOTS=/workspace/terraform-beginner-bootcamp-2023
+...
+```
+
+#### Setting and Unsetting Env Vars
+
+In the terminal, en vars can be set using this command:
+```zsh
+$ export HELLO="world"
+```
+They can be unset usinf this command:
+```zsh
+$ unset HELLO="world"
+```
+They can also be set temporarily by just running the command inline like this:
+```zsh
+$ HELLO="world" ./bin/print_message
+```
+
+Within bash script, it can be set without writing export.<br>
+E.g:
+```sh
+#!/usr/bin/env bash
+
+HELLO="world"
+
+echo $HELLO
+```
+#### Printing Env Vars
+
+Env Vars can be printed using the echo command on the terminal.<br>
+E.g:
+```zsh
+$ echo $HELLO
+```
+
+#### Scope of Env Vars
+Env Vars are limited to a specific session of bash terminals. They seize to exist when the session ends. To set them to persist across all future bash terminal sessions, env vars need to be updated in the bash profile file. e.g `.bashrc` or `.bash_profile` files.
+
+#### Persisting Env Vars in Gitpod
+
+Env Vars can be persisted into the gitpod env by storing them in the gitpod secrets storage by running this command:
+```zsh
+$ gp env HELLO="world"
+```
+All future workspaces lauched will set the env vars for all bash terminals opened in those workspaces.
+
+Env Vars can also be set in the `.gitpod.yml` file of the Gitpod launch template. This is usually used to store non-sensitive env vars.
