@@ -181,3 +181,28 @@ $ gp env HELLO="world"
 All future workspaces lauched will set the env vars for all bash terminals opened in those workspaces.
 
 Env Vars can also be set in the `.gitpod.yml` file of the Gitpod launch template. This is usually used to store non-sensitive env vars.
+
+
+### AWS CLI installation
+
+First, generate the AWS CLI credentials from AWS IAM User which is used to access the AWS Console.
+
+AWS CLI is installed for the project via this [bash script](./bin/install_aws_cli.sh).<br>
+Go to
+[Getting Started Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to confirm via AWS official documentation.
+
+Check if AWS credentials is configured correctly by running the following AWS CLI command:
+```zsh
+$ aws sts get-caller-identity
+```
+
+If it was configured correctly, you should get a `json` payload return that looks like this:
+```json
+{
+    "UserId": "ABCDEFGHAB1ABCDEFGH2Z",
+    "Account": "098765432109",
+    "Arn": "arn:aws:iam::098765432109:user/ibechuks"
+}
+```
+
+
